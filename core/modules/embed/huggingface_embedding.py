@@ -11,7 +11,7 @@ from pyvi.ViTokenizer import tokenize
 
 
 
-DEFAULT_HUGGINGFACE_LENGTH=512
+DEFAULT_HUGGINGFACE_LENGTH=256
 DEFAULT_HUGGINGFACE_FOLDERS = os.getenv("HF_CACHE_DIR", None)
 DEFAULT_EMBED_BATCH_SIZE=32
 
@@ -47,7 +47,7 @@ class CustomHuggingFaceEmbedding(BaseEmbedding):
         **model_kwargs,
     ):
         device = device or 'cuda' if torch.cuda.is_available() else 'cpu'
-        # device = 'cpu'
+
         cache_folder = cache_folder or DEFAULT_HUGGINGFACE_FOLDERS
 
         model = SentenceTransformer(
@@ -85,8 +85,8 @@ class CustomHuggingFaceEmbedding(BaseEmbedding):
         sentences: List[str], 
     ) -> List[List[str]]: 
         """Generates Embeddings either multiprocess or single process"""
-        # if self._language == 'vi': 
-        #     sentences = [tokenize(sent) for sent in sentences]
+        if self._language == 'vi': 
+            sentences = [tokenize(sent) for sent in sentences]
         
         if self._parallel_process: 
             pool = self._model.start_multi_process_pool(

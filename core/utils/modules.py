@@ -15,9 +15,15 @@ def setup_modules(settings: AppSettings) -> dict:
         base_url=base_url, 
         model=model
     )
-    
-    
+
+    embed_model = CustomHuggingFaceEmbedding(
+        model_name = settings.embed.embed_model, 
+        max_length = settings.embed.max_length,
+        cache_folder=settings.embed.cache_folder,
+        embed_batch_size=settings.embed.embed_batch_size,
+        language=settings.embed.language,
+    )
     
     Settings.llm = llm
-
+    Settings.embed_model = embed_model
     
