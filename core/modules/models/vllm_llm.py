@@ -2,7 +2,7 @@ from typing import Optional, List, Any, Sequence
 
 from llama_index.core.bridge.pydantic import Field, PrivateAttr
 from llama_index.core.llms import LLM
-from llama_index.llms.openai import OpenAI
+# from llama_index.llms.openai import OpenAI
 from llama_index.core.base.llms.types import (
     LLMMetadata,
     ChatResponse,
@@ -110,7 +110,7 @@ class selfHostLLM(LLM):
         response = self._llm.completions.create(
             model=self.model,
             prompt=prompt,
-            **kwargs
+            # **kwargs
         )
         return CompletionResponse(
             text=response.choices[0].text
