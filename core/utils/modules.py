@@ -1,5 +1,5 @@
 from llama_index.core import Settings
-from modules.models.vllm_llm import selfHostLLM
+from core.modules.models.llms import selfHostLLM
 from modules.embed.huggingface_embedding import CustomHuggingFaceEmbedding
 from .settings import Settings as AppSettings
 

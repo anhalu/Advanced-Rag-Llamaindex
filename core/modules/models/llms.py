@@ -51,7 +51,7 @@ class selfHostLLM(LLM):
         base_url: str, 
         model: str = 'Qwen/Qwen2.5-Coder-7B-Instruct-AWQ',
         temperature: float = 0.5,
-        max_output_tokens: Optional[int] = None,
+        max_output_tokens: Optional[int] = 1024,
         **kwargs
     ) -> None: 
         super().__init__(api_key=api_key,
@@ -76,7 +76,7 @@ class selfHostLLM(LLM):
     @property
     def metadata(self) -> LLMMetadata:
         return LLMMetadata(
-            context_window=32000,       # fix for qwen2.5 7B -> not use long context config
+            context_window= 32768,       # fix for qwen2.5 7B -> not use long context config
             num_output=8000, 
             is_chat_model=self.is_chat_model, 
             model_name=self.model
@@ -87,6 +87,7 @@ class selfHostLLM(LLM):
         response = self._llm.chat.completions.create(
             model=self.model,
             messages=messages,
+            max_tokens=self.max_output_tokens,
             **kwargs
         )
         chat_message = ChatMessage(
@@ -110,7 +111,8 @@ class selfHostLLM(LLM):
         response = self._llm.completions.create(
             model=self.model,
             prompt=prompt,
-            # **kwargs
+            max_tokens=self.max_output_tokens,
+            **kwargs
         )
         return CompletionResponse(
             text=response.choices[0].text
